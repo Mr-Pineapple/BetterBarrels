@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "pinesbarrels",
+  "version": "${version}",
+
+  "name": "Better Barrels",
+  "description": "This is a mod which adds new barrels to the game. the barrels act like shulker boxes, however, they don't hold as many items. This means you can have better inventory management early game!",
+  "authors": [
+    "Mr. Pineapple"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "discord": "https://discord.gg/mNWSEB5/",
+    "issues": "https://github.com/Mr-Pineapple/Barrels-Plus/issues",
+    "sources": "https://github.com/Mr-Pineapple/Barrels-Plus/"
+  },
+
+  "license": "Pinelog Studios v1.0",
+  "icon": "assets/pinesbarrels/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "co.uk.pinelogstudios.barrelsplus.BetterBarrels"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
