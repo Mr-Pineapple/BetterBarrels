@@ -1,7 +1,30 @@
 {
   "variants": {
-    "": {
+  
+    "facing=down": {
+      "x": 180,
       "model": "pinesbarrels:block/better_barrel"
+    },
+    
+    "facing=east": {
+      "model": "pinesbarrels:block/better_barrel_east"
+    },
+    
+    "facing=north": {
+      "model": "pinesbarrels:block/better_barrel_north"
+    },
+    
+    "facing=south": {
+      "model": "pinesbarrels:block/better_barrel_south"
+    },
+    
+    "facing=up": {
+      "model": "pinesbarrels:block/better_barrel"
+    },
+    
+    "facing=west": {
+      "model": "pinesbarrels:block/better_barrel_west"
     }
+    
   }
 }

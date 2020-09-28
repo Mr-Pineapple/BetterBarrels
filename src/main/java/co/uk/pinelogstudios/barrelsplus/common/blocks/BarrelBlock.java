@@ -4,35 +4,46 @@ import java.util.Iterator;
 import java.util.List;
 
 import co.uk.pinelogstudios.barrelsplus.common.blockentities.BarrelBlockEntity;
+import co.uk.pinelogstudios.barrelsplus.core.BetterBarrels;
+import co.uk.pinelogstudios.barrelsplus.core.VoxelShapeUtil;
 import co.uk.pinelogstudios.barrelsplus.core.registry.BlockInit;
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.Material;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.stat.Stats;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
@@ -40,11 +51,12 @@ import net.minecraft.world.World;
  *	Author:	Mr. Pineapple
  */
 public class BarrelBlock extends BlockWithEntity {
-
+	public static final DirectionProperty FACING;
 	public static final Identifier CONTENTS;
 	
 	public BarrelBlock() {
 		super(AbstractBlock.Settings.of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD).nonOpaque());
+		this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.UP));
 	}
 	
 	@Override
@@ -140,7 +152,7 @@ public class BarrelBlock extends BlockWithEntity {
 			if(compoundTag.contains("LootTable", 8)) {
 				tooltip.add(new LiteralText("???????"));
 			} if(compoundTag.contains("Items", 9)) {
-				DefaultedList<ItemStack> defaultedList = DefaultedList.ofSize(11, ItemStack.EMPTY);
+				DefaultedList<ItemStack> defaultedList = DefaultedList.ofSize(BetterBarrels.SLOT_AMOUNT, ItemStack.EMPTY);
 				Inventories.fromTag(compoundTag, defaultedList);
 				int i = 0;
 				int j = 0;
@@ -174,7 +186,48 @@ public class BarrelBlock extends BlockWithEntity {
 		} return itemStack;
 	}
 	
+	@Override
+	public BlockState rotate(BlockState state, BlockRotation rotation) {
+		return state.with(FACING, rotation.rotate((Direction)state.get(FACING)));
+	}
+	
+	@Override
+	public BlockState mirror(BlockState state, BlockMirror mirror) {
+		return state.rotate(mirror.getRotation((Direction)state.get(FACING)));
+	}
+	
+	@Override
+	protected void appendProperties(net.minecraft.state.StateManager.Builder<Block, BlockState> builder) {
+		builder.add(FACING);
+	}
+	
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
+	}
+	
+	@Override
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		switch(state.get(FACING)) {
+		case NORTH:
+			return VoxelShapeUtil.BARREL_NORTH;
+		case EAST:
+			return VoxelShapeUtil.BARREL_EAST;
+		case SOUTH:
+			return VoxelShapeUtil.BARREL_SOUTH;
+		case WEST:
+			return VoxelShapeUtil.BARREL_WEST;
+		case UP:
+			return VoxelShapeUtil.BARREL_UP;
+		case DOWN:
+			return VoxelShapeUtil.BARREL_DOWN;
+		default:
+			return VoxelShapeUtil.BARREL_UP;
+		}
+	}
+	
 	static {
+		FACING = Properties.FACING;
 		CONTENTS = new Identifier("contents");
 	}
 	

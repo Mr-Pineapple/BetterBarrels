@@ -1,6 +1,7 @@
 package co.uk.pinelogstudios.barrelsplus.client.screens;
 
 import co.uk.pinelogstudios.barrelsplus.client.screens.slots.BarrelSlot;
+import co.uk.pinelogstudios.barrelsplus.core.BetterBarrels;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -16,38 +17,30 @@ public class BarrelScreenHandler extends ScreenHandler {
 	private final Inventory inventory;
 	
 	public BarrelScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new SimpleInventory(11));
+		this(syncId, playerInventory, new SimpleInventory(BetterBarrels.SLOT_AMOUNT));
 	}
 
 	public BarrelScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
 		super(Screens.BARREL_SCREEN, syncId);
-		checkSize(inventory, 11);
+		checkSize(inventory, BetterBarrels.SLOT_AMOUNT);
 		this.inventory = inventory;
 		inventory.onOpen(playerInventory.player);
 		
 		int o;
 		int n;
 		
-		for(o = 0; o < 3; ++o) {
-			this.addSlot(new BarrelSlot(this.inventory, o, 62 + o * 18, 18));
-		}//BARREL TOP
-		
-		for(o = 0; o < 5; ++o) {
-			this.addSlot(new BarrelSlot(this.inventory, o + 3, 44 + o * 18, 36));
-		}//BARREL MIDDLE
-		
-		for(o = 0; o < 3; ++o) {
-			this.addSlot(new BarrelSlot(this.inventory, o + 8, 62 + o * 18, 54));
-		}//BARREL BOTTOM
+		for(o = 0; o < 9; ++o) {
+			this.addSlot(new BarrelSlot(this.inventory, o, 8 + o * 18, 18));
+		}//BARREL
 		
 		for(o = 0; o < 3; ++o) {
 			for(n = 0; n < 9; ++n) {
-				this.addSlot(new Slot(playerInventory, n + o * 9 + 9, 8 + n * 18, 84 + o * 18));
+				this.addSlot(new Slot(playerInventory, n + o * 9 + 9, 8 + n * 18, 48 + o * 18));
 			}
 		}//PLAYER INVENTORY
 		
 		for(o = 0; o < 9; ++o) {
-	         this.addSlot(new Slot(playerInventory, o, 8 + o * 18, 142));
+	         this.addSlot(new Slot(playerInventory, o, 8 + o * 18, 106));
 	      }//HOTBAR
 	}
 

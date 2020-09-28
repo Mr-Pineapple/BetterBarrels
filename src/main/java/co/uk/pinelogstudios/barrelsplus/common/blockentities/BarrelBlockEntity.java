@@ -4,6 +4,7 @@ import java.util.stream.IntStream;
 
 import co.uk.pinelogstudios.barrelsplus.client.screens.BarrelScreenHandler;
 import co.uk.pinelogstudios.barrelsplus.common.blocks.BarrelBlock;
+import co.uk.pinelogstudios.barrelsplus.core.BetterBarrels;
 import co.uk.pinelogstudios.barrelsplus.core.registry.BlockEntityInit;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -27,13 +28,13 @@ import net.minecraft.util.math.Direction;
  *	Author:	Mr. Pineapple
  */
 public class BarrelBlockEntity extends LootableContainerBlockEntity implements SidedInventory {
-	private static final int[] SLOTS = IntStream.range(0, 11).toArray();
+	private static final int[] SLOTS = IntStream.range(0, BetterBarrels.SLOT_AMOUNT).toArray();
 	private DefaultedList<ItemStack> inventory;
 	private int viewerCount;
 	
 	public BarrelBlockEntity() {
 		super(BlockEntityInit.BARREL);
-		this.inventory = DefaultedList.ofSize(11, ItemStack.EMPTY);
+		this.inventory = DefaultedList.ofSize(BetterBarrels.SLOT_AMOUNT, ItemStack.EMPTY);
 	}
 	
 	/* Gets the size of the inventory */
@@ -81,7 +82,7 @@ public class BarrelBlockEntity extends LootableContainerBlockEntity implements S
 			--this.viewerCount;
 			this.world.addSyncedBlockEvent(this.pos, this.getCachedState().getBlock(), 1, this.viewerCount);
 			if (this.viewerCount <= 0) {
-				this.world.playSound((PlayerEntity)null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.random.nextFloat() * 0.1F + 0.9F);
+				this.world.playSound((PlayerEntity)null, this.pos, SoundEvents.BLOCK_BARREL_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.random.nextFloat() * 0.1F + 0.9F);
 			}
 		}
 	}
@@ -134,7 +135,7 @@ public class BarrelBlockEntity extends LootableContainerBlockEntity implements S
 	
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-		return !(Block.getBlockFromItem(stack.getItem()) instanceof ShulkerBoxBlock) || !(Block.getBlockFromItem(stack.getItem()) instanceof BarrelBlock);
+		return !(Block.getBlockFromItem(stack.getItem()) instanceof ShulkerBoxBlock || Block.getBlockFromItem(stack.getItem()) instanceof BarrelBlock);
 	}
 	
 	@Override
@@ -146,12 +147,4 @@ public class BarrelBlockEntity extends LootableContainerBlockEntity implements S
 	protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
 		return new BarrelScreenHandler(syncId, playerInventory, this);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 }

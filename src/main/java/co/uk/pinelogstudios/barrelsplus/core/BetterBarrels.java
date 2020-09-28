@@ -11,6 +11,7 @@ import net.fabricmc.api.ModInitializer;
 public class BetterBarrels implements ModInitializer {
 	
 	public static final String MOD_ID = "pinesbarrels";
+	public static final int SLOT_AMOUNT = 9;
 	
 	@Override
 	public void onInitialize() {
