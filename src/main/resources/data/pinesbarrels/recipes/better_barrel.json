@@ -1,0 +1,23 @@
+﻿{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "PSP",
+        "PCP",
+        "PSP"
+    ],
+    "key": {
+        "C": {
+            "item": "minecraft:chest"
+        },
+        "P": {
+            "tag": "minecraft:planks"
+        },
+        "S": {
+            "tag": "minecraft:wooden_slabs"
+        }
+    },
+    "result": {
+        "item": "pinesbarrels:better_barrel",
+        "count": 1
+    }
+}
