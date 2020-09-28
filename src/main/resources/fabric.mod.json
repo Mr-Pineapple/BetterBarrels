@@ -20,8 +20,11 @@
 
   "environment": "*",
   "entrypoints": {
+  "client": [
+      "co.uk.pinelogstudios.barrelsplus.client.BetterBarrelsClient"
+    ],
     "main": [
-      "co.uk.pinelogstudios.barrelsplus.BetterBarrels"
+      "co.uk.pinelogstudios.barrelsplus.core.BetterBarrels"
     ]
   },
   "depends": {
