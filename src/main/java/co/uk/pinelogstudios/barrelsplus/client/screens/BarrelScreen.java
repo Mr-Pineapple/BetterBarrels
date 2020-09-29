@@ -2,7 +2,6 @@ package co.uk.pinelogstudios.barrelsplus.client.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import co.uk.pinelogstudios.barrelsplus.core.BetterBarrels;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -16,7 +15,7 @@ import net.minecraft.util.Identifier;
  */
 @Environment(EnvType.CLIENT)
 public class BarrelScreen extends HandledScreen<BarrelScreenHandler>{
-	public static final Identifier TEXTURE = new Identifier(BetterBarrels.MOD_ID, "textures/gui/better_barrel.png");
+	public static final Identifier TEXTURE = new Identifier("textures/gui/container/dispenser.png");
 	
 	public BarrelScreen(BarrelScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
@@ -39,10 +38,4 @@ public class BarrelScreen extends HandledScreen<BarrelScreenHandler>{
 	    this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
 	}
 	
-	@Override
-	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-		this.textRenderer.draw(matrices, this.title, (float)this.titleX, (float)this.titleY, 4210752);
-		this.textRenderer.draw(matrices, this.playerInventory.getDisplayName(), (float)this.playerInventoryTitleX, (float)this.playerInventoryTitleY - 35, 4210752);
-	   
-	}
 }

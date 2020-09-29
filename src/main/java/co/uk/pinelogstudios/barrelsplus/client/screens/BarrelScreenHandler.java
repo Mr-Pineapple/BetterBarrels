@@ -29,18 +29,20 @@ public class BarrelScreenHandler extends ScreenHandler {
 		int o;
 		int n;
 		
-		for(o = 0; o < 9; ++o) {
-			this.addSlot(new BarrelSlot(this.inventory, o, 8 + o * 18, 18));
+		for(o = 0; o < 3; ++o) {
+			for(n = 0; n < 3; ++n) {
+				this.addSlot(new BarrelSlot(inventory, n + o * 3, 62 + n * 18, 17 + o * 18));
+			}
 		}//BARREL
 		
 		for(o = 0; o < 3; ++o) {
 			for(n = 0; n < 9; ++n) {
-				this.addSlot(new Slot(playerInventory, n + o * 9 + 9, 8 + n * 18, 48 + o * 18));
+				this.addSlot(new Slot(playerInventory, n + o * 9 + 9, 8 + n * 18, 84 + o * 18));
 			}
 		}//PLAYER INVENTORY
 		
 		for(o = 0; o < 9; ++o) {
-	         this.addSlot(new Slot(playerInventory, o, 8 + o * 18, 106));
+	         this.addSlot(new Slot(playerInventory, o, 8 + o * 18, 142));
 	      }//HOTBAR
 	}
 
