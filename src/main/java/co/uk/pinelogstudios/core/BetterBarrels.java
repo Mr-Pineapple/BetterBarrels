@@ -1,5 +1,7 @@
 package co.uk.pinelogstudios.core;
 
+import co.uk.pinelogstudios.core.registry.BlockRegistry;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -12,6 +14,10 @@ public class BetterBarrels {
     public static final int SLOT_AMOUNT = 9;
 
     public BetterBarrels() {
-        FMLJavaModLoadingContext.get().getModEventBus().register(this);
+        final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        bus.register(this);
+        BlockRegistry.REGISTER.register(bus);
+        BlockRegistry.REGISTER_ITEM.register(bus);
+
     }
 }
