@@ -18,6 +18,5 @@ public class BetterBarrels {
         bus.register(this);
         BlockRegistry.REGISTER.register(bus);
         BlockRegistry.REGISTER_ITEM.register(bus);
-
     }
 }

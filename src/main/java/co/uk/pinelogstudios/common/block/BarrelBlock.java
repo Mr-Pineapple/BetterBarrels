@@ -22,9 +22,32 @@ import javax.annotation.Nullable;
  * Author: Mr. Pineapple
  */
 public class BarrelBlock extends ContainerBlock {
+    public static final DirectionProperty FACING = DirectionalBlock.FACING;
 
     public BarrelBlock() {
         super(AbstractBlock.Properties.of(Material.WOOD));
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.getStateDefinition().any().setValue(FACING, context.getNearestLookingDirection().getOpposite());
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction) {
+        return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
     }
 
     @Nullable
