@@ -29,6 +29,26 @@ public class BarrelBlock extends ContainerBlock {
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+        switch(state.getValue(FACING)) {
+            case UP:
+                return VoxelShapeUtil.BARREL_UP;
+            case DOWN:
+                return VoxelShapeUtil.BARREL_DOWN;
+            case NORTH:
+                return VoxelShapeUtil.BARREL_NORTH;
+            case EAST:
+                return VoxelShapeUtil.BARREL_EAST;
+            case SOUTH:
+                return VoxelShapeUtil.BARREL_SOUTH;
+            case WEST:
+                return VoxelShapeUtil.BARREL_WEST;
+            default:
+                return VoxelShapeUtil.BARREL_UP;
+        }
+    }
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
