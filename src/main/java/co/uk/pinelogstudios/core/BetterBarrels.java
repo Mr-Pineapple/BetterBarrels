@@ -1,6 +1,7 @@
 package co.uk.pinelogstudios.core;
 
 import co.uk.pinelogstudios.core.registry.BlockRegistry;
+import co.uk.pinelogstudios.core.registry.TileEntityRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -18,5 +19,7 @@ public class BetterBarrels {
         bus.register(this);
         BlockRegistry.REGISTER.register(bus);
         BlockRegistry.REGISTER_ITEM.register(bus);
+        TileEntityRegistry.REGISTER_TILE_ENTITY.register(bus);
+        TileEntityRegistry.REGISTER_CONTAINER.register(bus);
     }
 }
