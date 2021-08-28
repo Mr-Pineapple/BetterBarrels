@@ -19,6 +19,13 @@ public class BarrelScreen extends ContainerScreen<BarrelContainer> {
     }
 
     @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        this.renderBackground(matrices);
+        super.render(matrices, mouseX, mouseY, delta);
+        this.renderTooltip(matrices, mouseX, mouseY);
+    }
+
+    @Override
     protected void renderBg(MatrixStack matrices, float delta, int mouseX, int mouseY) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bind(CONTAINER_TEXTURE);
