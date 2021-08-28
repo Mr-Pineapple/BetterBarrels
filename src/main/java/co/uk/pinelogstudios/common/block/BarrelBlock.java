@@ -40,7 +40,7 @@ public class BarrelBlock extends ContainerBlock {
     public static final ResourceLocation CONTENTS = new ResourceLocation("contents");
 
     public BarrelBlock() {
-        super(AbstractBlock.Properties.of(Material.WOOD));
+        super(AbstractBlock.Properties.of(Material.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD));
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 
