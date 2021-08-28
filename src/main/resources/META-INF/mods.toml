@@ -24,3 +24,6 @@ description="This is a mod which adds new barrels to the game. the barrels act l
     versionRange="[1.16.5,1.17)"
     ordering="NONE"
     side="BOTH"
+
+[modproperties.pinesbarrels]
+    catalogueItemIcon="pinesbarrels:better_barrel"
