@@ -15,8 +15,8 @@ import net.minecraft.item.ItemStack;
 public class BarrelContainer extends Container {
     private final IInventory container;
 
-    public BarrelContainer(int p_i50065_1_, PlayerInventory p_i50065_2_) {
-        this(p_i50065_1_, p_i50065_2_, new Inventory(27));
+    public BarrelContainer(int windowId, PlayerInventory playerInventory) {
+        this(windowId, playerInventory, new Inventory(27));
     }
 
     public BarrelContainer(int windowId, PlayerInventory playerInventory, IInventory inventory) {

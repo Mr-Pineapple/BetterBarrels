@@ -1,8 +1,6 @@
 package co.uk.pinelogstudios.client.screens;
 
 import co.uk.pinelogstudios.client.screens.containers.BarrelContainer;
-import co.uk.pinelogstudios.common.block.BarrelBlock;
-import co.uk.pinelogstudios.core.BetterBarrels;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;

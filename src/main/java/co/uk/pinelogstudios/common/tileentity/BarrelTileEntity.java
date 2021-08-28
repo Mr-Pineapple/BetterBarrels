@@ -10,7 +10,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.LockableLootTileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
@@ -31,7 +30,7 @@ public class BarrelTileEntity extends LockableLootTileEntity implements ISidedIn
     }
 
     @Override
-    public int[] getSlotsForFace(Direction p_180463_1_) {
+    public int[] getSlotsForFace(Direction direction) {
         return SLOTS;
     }
 
