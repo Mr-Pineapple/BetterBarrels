@@ -2,6 +2,7 @@ package co.uk.pinelogstudios.common.tileentity;
 
 import co.uk.pinelogstudios.client.screens.containers.BarrelContainer;
 import co.uk.pinelogstudios.common.block.BarrelBlock;
+import co.uk.pinelogstudios.core.registry.TagRegistry;
 import co.uk.pinelogstudios.core.registry.TileEntityRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -39,7 +40,7 @@ public class BarrelTileEntity extends LockableLootTileEntity implements ISidedIn
 
     @Override
     public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction direction) {
-        return !((Block.byItem(itemStack.getItem())) instanceof ShulkerBoxBlock || (Block.byItem((itemStack.getItem())) instanceof BarrelBlock));
+        return !(Block.byItem(itemStack.getItem()).is(TagRegistry.FORBIDDEN_BARREL_CONTENTS));
     }
 
     @Override

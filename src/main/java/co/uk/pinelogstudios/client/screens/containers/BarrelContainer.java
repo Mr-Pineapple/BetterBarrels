@@ -1,5 +1,6 @@
 package co.uk.pinelogstudios.client.screens.containers;
 
+import co.uk.pinelogstudios.client.screens.slots.BarrelSlot;
 import co.uk.pinelogstudios.core.registry.TileEntityRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -28,7 +29,7 @@ public class BarrelContainer extends Container {
 
         for(o = 0; o < 3; ++o) {
             for(n = 0; n < 3; ++n) {
-                this.addSlot(new Slot(inventory, n + o * 3, 62 + n * 18, 17 + o * 18));
+                this.addSlot(new BarrelSlot(inventory, n + o * 3, 62 + n * 18, 17 + o * 18));
             }
         }
 
