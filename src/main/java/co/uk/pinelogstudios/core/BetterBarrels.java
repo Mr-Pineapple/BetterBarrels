@@ -1,9 +1,12 @@
 package co.uk.pinelogstudios.core;
 
+import co.uk.pinelogstudios.client.screens.BarrelScreen;
 import co.uk.pinelogstudios.core.registry.BlockRegistry;
 import co.uk.pinelogstudios.core.registry.TileEntityRegistry;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
@@ -21,5 +24,10 @@ public class BetterBarrels {
         BlockRegistry.REGISTER_ITEM.register(bus);
         TileEntityRegistry.REGISTER_TILE_ENTITY.register(bus);
         TileEntityRegistry.REGISTER_CONTAINER.register(bus);
+        bus.addListener(this::clientSetup);
+    }
+
+    public void clientSetup(final FMLClientSetupEvent event) {
+        ScreenManager.register(TileEntityRegistry.BARREL_CONTAINER.get(), BarrelScreen::new);
     }
 }

@@ -1,20 +1,23 @@
 package co.uk.pinelogstudios.common.block;
 
+import co.uk.pinelogstudios.common.tileentity.BarrelTileEntity;
 import co.uk.pinelogstudios.common.util.VoxelShapeUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
@@ -27,6 +30,25 @@ public class BarrelBlock extends ContainerBlock {
     public BarrelBlock() {
         super(AbstractBlock.Properties.of(Material.WOOD));
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+        if(world.isClientSide) {
+            return ActionResultType.SUCCESS;
+        } else if(player.isSpectator()) {
+            return ActionResultType.CONSUME;
+        } else {
+            TileEntity tileEntity = world.getBlockEntity(pos);
+            if(tileEntity instanceof BarrelTileEntity) {
+                BarrelTileEntity barrelTileEntity = (BarrelTileEntity) tileEntity;
+                player.openMenu(barrelTileEntity);
+                player.awardStat(Stats.OPEN_BARREL);
+                return ActionResultType.CONSUME;
+            } else {
+                return ActionResultType.PASS;
+            }
+        }
     }
 
     @Override
@@ -73,7 +95,12 @@ public class BarrelBlock extends ContainerBlock {
     @Nullable
     @Override
     public TileEntity newBlockEntity(IBlockReader world) {
-        return null;
+        return new BarrelTileEntity();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
     }
 
     @Override

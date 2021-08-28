@@ -4,6 +4,7 @@ import co.uk.pinelogstudios.core.registry.TileEntityRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,10 @@ import net.minecraft.item.ItemStack;
  */
 public class BarrelContainer extends Container {
     private final IInventory container;
+
+    public BarrelContainer(int p_i50065_1_, PlayerInventory p_i50065_2_) {
+        this(p_i50065_1_, p_i50065_2_, new Inventory(27));
+    }
 
     public BarrelContainer(int windowId, PlayerInventory playerInventory, IInventory inventory) {
         super(TileEntityRegistry.BARREL_CONTAINER.get(), windowId);
