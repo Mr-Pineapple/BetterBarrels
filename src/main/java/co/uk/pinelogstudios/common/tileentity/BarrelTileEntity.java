@@ -4,11 +4,14 @@ import co.uk.pinelogstudios.client.screens.containers.BarrelContainer;
 import co.uk.pinelogstudios.common.block.BarrelBlock;
 import co.uk.pinelogstudios.core.registry.TileEntityRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
@@ -67,5 +70,31 @@ public class BarrelTileEntity extends LockableLootTileEntity implements ISidedIn
     @Override
     public int getContainerSize() {
         return this.itemStacks.size();
+    }
+
+    @Override
+    public void load(BlockState state, CompoundNBT compoundTag) {
+        super.load(state, compoundTag);
+        this.loadFromTag(compoundTag);
+    }
+
+    @Override
+    public CompoundNBT save(CompoundNBT compoundTag) {
+        super.save(compoundTag);
+        return this.saveToTag(compoundTag);
+    }
+
+    public void loadFromTag(CompoundNBT compoundTag) {
+        this.itemStacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        if(!this.tryLoadLootTable(compoundTag) && compoundTag.contains("Items", 9)) {
+            ItemStackHelper.loadAllItems(compoundTag, this.itemStacks);
+        }
+    }
+
+    public CompoundNBT saveToTag(CompoundNBT compoundTag) {
+        if(!this.trySaveLootTable(compoundTag)) {
+            ItemStackHelper.saveAllItems(compoundTag, this.itemStacks, false);
+        }
+        return compoundTag;
     }
 }
