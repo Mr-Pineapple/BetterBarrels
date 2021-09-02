@@ -24,7 +24,7 @@ public class BlockRegistry {
 
     public static <B extends Block> RegistryObject<B> register(String name, Supplier<? extends B> supplier, @Nullable ItemGroup group) {
         RegistryObject<B> block = REGISTER.register(name, supplier);
-        REGISTER_ITEM.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(group)));
+        REGISTER_ITEM.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(group).stacksTo(1)));
         return block;
     }
 }
