@@ -2,25 +2,25 @@ package co.uk.pinelogstudios.client.screens.containers;
 
 import co.uk.pinelogstudios.client.screens.slots.BarrelSlot;
 import co.uk.pinelogstudios.core.registry.TileEntityRegistry;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Author: Mr. Pineapple
  */
-public class BarrelContainer extends Container {
-    private final IInventory container;
+public class BarrelContainer extends AbstractContainerMenu {
+    private final Container container;
 
-    public BarrelContainer(int windowId, PlayerInventory playerInventory) {
-        this(windowId, playerInventory, new Inventory(27));
+    public BarrelContainer(int windowId, Inventory playerInventory) {
+        this(windowId, playerInventory, new SimpleContainer(27));
     }
 
-    public BarrelContainer(int windowId, PlayerInventory playerInventory, IInventory inventory) {
+    public BarrelContainer(int windowId, Inventory playerInventory, Container inventory) {
         super(TileEntityRegistry.BARREL_CONTAINER.get(), windowId);
         checkContainerSize(inventory, 27);
         this.container = inventory;
@@ -44,7 +44,7 @@ public class BarrelContainer extends Container {
 
     }
 
-    public ItemStack quickMoveStack(PlayerEntity player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot != null && slot.hasItem()) {
@@ -68,12 +68,12 @@ public class BarrelContainer extends Container {
         return itemstack;
     }
 
-    public void removed(PlayerEntity player) {
+    public void removed(Player player) {
         super.removed(player);
         this.container.stopOpen(player);
     }
 
-    public boolean stillValid(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return this.container.stillValid(player);
     }
 }

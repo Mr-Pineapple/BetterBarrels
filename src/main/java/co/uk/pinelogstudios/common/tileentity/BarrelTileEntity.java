@@ -1,23 +1,24 @@
 package co.uk.pinelogstudios.common.tileentity;
 
 import co.uk.pinelogstudios.client.screens.containers.BarrelContainer;
-import co.uk.pinelogstudios.common.block.BarrelBlock;
 import co.uk.pinelogstudios.core.registry.TagRegistry;
 import co.uk.pinelogstudios.core.registry.TileEntityRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.LockableLootTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 import java.util.stream.IntStream;
@@ -25,12 +26,12 @@ import java.util.stream.IntStream;
 /**
  * Author: Mr. Pineapple
  */
-public class BarrelTileEntity extends LockableLootTileEntity implements ISidedInventory {
+public class BarrelTileEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
     private static final int[] SLOTS = IntStream.range(0, 27).toArray();
     private NonNullList<ItemStack> itemStacks = NonNullList.withSize(27, ItemStack.EMPTY);
 
-    public BarrelTileEntity() {
-        super(TileEntityRegistry.BARREL.get());
+    public BarrelTileEntity(BlockPos pos, BlockState state) {
+        super(TileEntityRegistry.BARREL.get(), pos, state);
     }
 
     @Override
@@ -40,7 +41,8 @@ public class BarrelTileEntity extends LockableLootTileEntity implements ISidedIn
 
     @Override
     public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction direction) {
-        return !(Block.byItem(itemStack.getItem()).is(TagRegistry.FORBIDDEN_BARREL_CONTENTS));
+        //return !(Block.byItem(itemStack.getItem()).is(TagRegistry.FORBIDDEN_BARREL_CONTENTS));
+        return itemStack.getItem().canFitInsideContainerItems();
     }
 
     @Override
@@ -59,12 +61,12 @@ public class BarrelTileEntity extends LockableLootTileEntity implements ISidedIn
     }
 
     @Override
-    protected ITextComponent getDefaultName() {
-        return new TranslationTextComponent("container.barrel");
+    protected Component getDefaultName() {
+        return new TranslatableComponent("container.barrel");
     }
 
     @Override
-    protected Container createMenu(int windowId, PlayerInventory playerInventory) {
+    protected AbstractContainerMenu createMenu(int windowId, Inventory playerInventory) {
         return new BarrelContainer(windowId, playerInventory, this);
     }
 
@@ -74,27 +76,27 @@ public class BarrelTileEntity extends LockableLootTileEntity implements ISidedIn
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT compoundTag) {
-        super.load(state, compoundTag);
+    public void load(CompoundTag compoundTag) {
+        super.load(compoundTag);
         this.loadFromTag(compoundTag);
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compoundTag) {
+    public CompoundTag save(CompoundTag compoundTag) {
         super.save(compoundTag);
         return this.saveToTag(compoundTag);
     }
 
-    public void loadFromTag(CompoundNBT compoundTag) {
+    public void loadFromTag(CompoundTag compoundTag) {
         this.itemStacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         if(!this.tryLoadLootTable(compoundTag) && compoundTag.contains("Items", 9)) {
-            ItemStackHelper.loadAllItems(compoundTag, this.itemStacks);
+            ContainerHelper.loadAllItems(compoundTag, this.itemStacks);
         }
     }
 
-    public CompoundNBT saveToTag(CompoundNBT compoundTag) {
+    public CompoundTag saveToTag(CompoundTag compoundTag) {
         if(!this.trySaveLootTable(compoundTag)) {
-            ItemStackHelper.saveAllItems(compoundTag, this.itemStacks, false);
+            ContainerHelper.saveAllItems(compoundTag, this.itemStacks, false);
         }
         return compoundTag;
     }

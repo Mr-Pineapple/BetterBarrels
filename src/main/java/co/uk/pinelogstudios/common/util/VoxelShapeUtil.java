@@ -1,10 +1,9 @@
 package co.uk.pinelogstudios.common.util;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.stream.Stream;
 
@@ -38,7 +37,7 @@ public class VoxelShapeUtil {
             Block.box(14.25, 4, 1.75, 15.25, 6, 14.25),
             Block.box(14.25, 12, 1.75, 15.25, 14, 14.25),
             Block.box(0.75, 4, 1.75, 1.75, 6, 14.25)
-    ).reduce((v1, v2) -> {return VoxelShapes.join(v1, v2, IBooleanFunction.OR);}).get();
+    ).reduce((v1, v2) -> {return Shapes.join(v1, v2, BooleanOp.OR);}).get();
 
     public static final VoxelShape BARREL_DOWN = Stream.of(
             Block.box(5, 0, 5, 6, 1, 7),
@@ -66,7 +65,7 @@ public class VoxelShapeUtil {
             Block.box(14.25, 10, 1.75, 15.25, 12, 14.25),
             Block.box(14.25, 2, 1.75, 15.25, 4, 14.25),
             Block.box(0.75, 10, 1.75, 1.75, 12, 14.25)
-    ).reduce((v1, v2) -> {return VoxelShapes.join(v1, v2, IBooleanFunction.OR);}).get();
+    ).reduce((v1, v2) -> {return Shapes.join(v1, v2, BooleanOp.OR);}).get();
 
     public static final VoxelShape BARREL_NORTH = Stream.of(
             Block.box(9, 4.25, 0, 11, 5.25, 1),
@@ -94,7 +93,7 @@ public class VoxelShapeUtil {
             Block.box(1.75, 13.5, 10, 14.25, 14.5, 12),
             Block.box(1.75, 13.5, 2, 14.25, 14.5, 4),
             Block.box(1.75, 0, 10, 14.25, 1, 12)
-    ).reduce((v1, v2) -> {return VoxelShapes.join(v1, v2, IBooleanFunction.OR);}).get();
+    ).reduce((v1, v2) -> {return Shapes.join(v1, v2, BooleanOp.OR);}).get();
 
     public static final VoxelShape BARREL_EAST = Stream.of(
             Block.box(15, 4.25, 9, 16, 5.25, 11),
@@ -122,7 +121,7 @@ public class VoxelShapeUtil {
             Block.box(4, 13.5, 1.75, 6, 14.5, 14.25),
             Block.box(12, 13.5, 1.75, 14, 14.5, 14.25),
             Block.box(4, 0, 1.75, 6, 1, 14.25)
-    ).reduce((v1, v2) -> {return VoxelShapes.join(v1, v2, IBooleanFunction.OR);}).get();
+    ).reduce((v1, v2) -> {return Shapes.join(v1, v2, BooleanOp.OR);}).get();
 
 
     public static final VoxelShape BARREL_SOUTH = Stream.of(
@@ -151,7 +150,7 @@ public class VoxelShapeUtil {
             Block.box(1.75, 13.5, 4, 14.25, 14.5, 6),
             Block.box(1.75, 13.5, 12, 14.25, 14.5, 14),
             Block.box(1.75, 0, 4, 14.25, 1, 6)
-    ).reduce((v1, v2) -> {return VoxelShapes.join(v1, v2, IBooleanFunction.OR);}).get();
+    ).reduce((v1, v2) -> {return Shapes.join(v1, v2, BooleanOp.OR);}).get();
 
     public static final VoxelShape BARREL_WEST = Stream.of(
             Block.box(0, 4.25, 5, 1, 5.25, 7),
@@ -179,5 +178,5 @@ public class VoxelShapeUtil {
             Block.box(10, 13.5, 1.75, 12, 14.5, 14.25),
             Block.box(2, 13.5, 1.75, 4, 14.5, 14.25),
             Block.box(10, 0, 1.75, 12, 1, 14.25)
-    ).reduce((v1, v2) -> {return VoxelShapes.join(v1, v2, IBooleanFunction.OR);}).get();
+    ).reduce((v1, v2) -> {return Shapes.join(v1, v2, BooleanOp.OR);}).get();
 }

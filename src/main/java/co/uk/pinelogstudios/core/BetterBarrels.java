@@ -3,7 +3,7 @@ package co.uk.pinelogstudios.core;
 import co.uk.pinelogstudios.client.screens.BarrelScreen;
 import co.uk.pinelogstudios.core.registry.BlockRegistry;
 import co.uk.pinelogstudios.core.registry.TileEntityRegistry;
-import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -28,6 +28,6 @@ public class BetterBarrels {
     }
 
     public void clientSetup(final FMLClientSetupEvent event) {
-        ScreenManager.register(TileEntityRegistry.BARREL_CONTAINER.get(), BarrelScreen::new);
+        MenuScreens.register(TileEntityRegistry.BARREL_CONTAINER.get(), BarrelScreen::new);
     }
 }
