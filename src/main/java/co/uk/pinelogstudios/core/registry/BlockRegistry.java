@@ -1,6 +1,7 @@
 package co.uk.pinelogstudios.core.registry;
 
 import co.uk.pinelogstudios.common.block.BarrelBlock;
+import co.uk.pinelogstudios.common.item.BarrelBlockItem;
 import co.uk.pinelogstudios.core.BetterBarrels;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -24,7 +25,7 @@ public class BlockRegistry {
 
     public static <B extends Block> RegistryObject<B> register(String name, Supplier<? extends B> supplier, @Nullable CreativeModeTab group) {
         RegistryObject<B> block = REGISTER.register(name, supplier);
-        REGISTER_ITEM.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(group).stacksTo(1)));
+        REGISTER_ITEM.register(name, () -> new BarrelBlockItem(block.get(), new Item.Properties().tab(group).stacksTo(1)));
         return block;
     }
 }
