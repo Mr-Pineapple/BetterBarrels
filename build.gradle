@@ -17,7 +17,7 @@ archivesBaseName = 'pinesbarrels'
 java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 minecraft {
-    mappings channel: 'official', version: '1.17'
+    mappings channel: 'official', version: '1.17.1'
     runs {
         client {
             workingDirectory project.file('run')
@@ -61,7 +61,7 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.58'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.59'
 }
 
 jar {
