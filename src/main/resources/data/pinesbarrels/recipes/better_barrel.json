@@ -7,13 +7,13 @@
     ],
     "key": {
         "C": {
-            "item": "minecraft:chest"
+            "tag": "forge:chests/wooden"
         },
         "P": {
             "tag": "minecraft:planks"
         },
         "S": {
-            "item": "minecraft:iron_ingot"
+            "tag": "forge:ingots/iron"
         }
     },
     "result": {

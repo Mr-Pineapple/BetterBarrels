@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="[37,)"
+license="All rights reserved"
+issueTrackerURL="https://github.com/Mr-Pineapple/BetterBarrels/issues"
+
+[[mods]]
+modId="pinesbarrels"
+version="1.0.2"
+displayName="Better Barrels"
+logoFile="icon.png"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/better-barrels"
+credits=""
+authors="Mr. Pineapple"
+updateJSONURL="https://raw.githubusercontent.com/Mr-Pineapple/ModUpdateJSON/master/betterbarrels/update.json"
+description="This is a mod which adds new barrels to the game. the barrels act like shulker boxes, however, they don't hold as many items. This means you can have better inventory management early game!"
+
+[[dependencies.pinesbarrels]]
+    modId="forge"
+    mandatory=true
+    versionRange="[37,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.pinesbarrels]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.17.1,1.18)"
+    ordering="NONE"
+    side="BOTH"
+
+[modproperties.pinesbarrels]
+    catalogueItemIcon="pinesbarrels:better_barrel"
