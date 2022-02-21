@@ -1,8 +1,7 @@
-package co.uk.pinelogstudios.common.tileentity;
+package co.uk.pinelogstudios.common.blockentity;
 
 import co.uk.pinelogstudios.client.screens.containers.BarrelContainer;
-import co.uk.pinelogstudios.core.registry.TagRegistry;
-import co.uk.pinelogstudios.core.registry.TileEntityRegistry;
+import co.uk.pinelogstudios.core.registry.BlockEntityRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -13,9 +12,7 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -25,12 +22,12 @@ import java.util.stream.IntStream;
 /**
  * Author: Mr. Pineapple
  */
-public class BarrelTileEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
+public class BarrelBlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
     private static final int[] SLOTS = IntStream.range(0, 27).toArray();
     private NonNullList<ItemStack> itemStacks = NonNullList.withSize(27, ItemStack.EMPTY);
 
-    public BarrelTileEntity(BlockPos pos, BlockState state) {
-        super(TileEntityRegistry.BARREL.get(), pos, state);
+    public BarrelBlockEntity(BlockPos pos, BlockState state) {
+        super(BlockEntityRegistry.BARREL.get(), pos, state);
     }
 
     @Override
@@ -82,9 +79,11 @@ public class BarrelTileEntity extends RandomizableContainerBlockEntity implement
     }
 
     @Override
-    public CompoundTag save(CompoundTag compoundTag) {
-        super.save(compoundTag);
-        return this.saveToTag(compoundTag);
+    protected void saveAdditional(CompoundTag nbt) {
+        super.saveAdditional(nbt);
+        if (!this.trySaveLootTable(nbt)) {
+            ContainerHelper.saveAllItems(nbt, this.itemStacks, false);
+        }
     }
 
     public void loadFromTag(CompoundTag compoundTag) {
@@ -92,12 +91,5 @@ public class BarrelTileEntity extends RandomizableContainerBlockEntity implement
         if(!this.tryLoadLootTable(compoundTag) && compoundTag.contains("Items", 9)) {
             ContainerHelper.loadAllItems(compoundTag, this.itemStacks);
         }
-    }
-
-    public CompoundTag saveToTag(CompoundTag compoundTag) {
-        if(!this.trySaveLootTable(compoundTag)) {
-            ContainerHelper.saveAllItems(compoundTag, this.itemStacks, false);
-        }
-        return compoundTag;
     }
 }
