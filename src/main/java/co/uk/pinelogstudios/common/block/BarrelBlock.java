@@ -19,6 +19,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -75,6 +76,7 @@ public class BarrelBlock extends BaseEntityBlock {
                 BarrelBlockEntity barrelBlockEntity = (BarrelBlockEntity) blockEntity;
                 player.openMenu(barrelBlockEntity);
                 player.awardStat(Stats.OPEN_BARREL);
+                PiglinAi.angerNearbyPiglins(player, true);
                 return InteractionResult.CONSUME;
             } else {
                 return InteractionResult.PASS;
