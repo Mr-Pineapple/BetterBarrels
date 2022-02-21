@@ -34,6 +34,7 @@
             },
             {
               "function": "minecraft:set_contents",
+              "type": "pinesbarrels:better_barrel",
               "entries": [
                 {
                   "type": "minecraft:dynamic",

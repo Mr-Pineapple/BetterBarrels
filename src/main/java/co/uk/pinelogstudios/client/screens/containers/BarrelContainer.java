@@ -1,7 +1,7 @@
 package co.uk.pinelogstudios.client.screens.containers;
 
 import co.uk.pinelogstudios.client.screens.slots.BarrelSlot;
-import co.uk.pinelogstudios.core.registry.TileEntityRegistry;
+import co.uk.pinelogstudios.core.registry.BlockEntityRegistry;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.Container;
@@ -21,7 +21,7 @@ public class BarrelContainer extends AbstractContainerMenu {
     }
 
     public BarrelContainer(int windowId, Inventory playerInventory, Container inventory) {
-        super(TileEntityRegistry.BARREL_CONTAINER.get(), windowId);
+        super(BlockEntityRegistry.BARREL_CONTAINER.get(), windowId);
         checkContainerSize(inventory, 27);
         this.container = inventory;
         inventory.startOpen(playerInventory.player);

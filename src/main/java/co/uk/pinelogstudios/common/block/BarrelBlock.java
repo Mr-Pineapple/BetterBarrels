@@ -1,6 +1,6 @@
 package co.uk.pinelogstudios.common.block;
 
-import co.uk.pinelogstudios.common.tileentity.BarrelTileEntity;
+import co.uk.pinelogstudios.common.blockentity.BarrelBlockEntity;
 import co.uk.pinelogstudios.common.util.VoxelShapeUtil;
 import co.uk.pinelogstudios.core.registry.BlockRegistry;
 import net.minecraft.ChatFormatting;
@@ -19,6 +19,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -36,6 +38,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -54,18 +57,25 @@ public class BarrelBlock extends BaseEntityBlock {
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 
+    /**
+     * Some methods, including {@link BlockBehaviour#use(BlockState, Level, BlockPos, Player, InteractionHand, BlockHitResult)},
+     * are marked as {@link Deprecated} but they are still fine to {@link Override}.
+     * It is recommended however not to call them directly, but to use similar methods from other classes.
+     */
+    @SuppressWarnings("deprecation")
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if(world.isClientSide) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if(level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else if(player.isSpectator()) {
             return InteractionResult.CONSUME;
         } else {
-            BlockEntity tileEntity = world.getBlockEntity(pos);
-            if(tileEntity instanceof BarrelTileEntity) {
-                BarrelTileEntity barrelTileEntity = (BarrelTileEntity) tileEntity;
-                player.openMenu(barrelTileEntity);
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof BarrelBlockEntity) {
+                BarrelBlockEntity barrelBlockEntity = (BarrelBlockEntity) blockEntity;
+                player.openMenu(barrelBlockEntity);
                 player.awardStat(Stats.OPEN_BARREL);
+                PiglinAi.angerNearbyPiglins(player, true);
                 return InteractionResult.CONSUME;
             } else {
                 return InteractionResult.PASS;
@@ -73,6 +83,7 @@ public class BarrelBlock extends BaseEntityBlock {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         switch(state.getValue(FACING)) {
@@ -104,6 +115,7 @@ public class BarrelBlock extends BaseEntityBlock {
         return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public BlockState mirror(BlockState state, Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
@@ -117,76 +129,69 @@ public class BarrelBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new BarrelTileEntity(blockPos, blockState);
+        return new BarrelBlockEntity(blockPos, blockState);
     }
 
-    /*
     @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-     */
-
-    @Override
-    public RenderShape getRenderShape(BlockState p_149645_1_) {
+    public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
     }
 
     @Override
-    public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
-        BlockEntity tileEntity = world.getBlockEntity(pos);
-        if(tileEntity instanceof BarrelTileEntity) {
-            BarrelTileEntity barrelTileEntity = (BarrelTileEntity) tileEntity;
-            if(world.isClientSide && player.isCreative() && !barrelTileEntity.isEmpty()) {
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof BarrelBlockEntity) {
+            BarrelBlockEntity barrelBlockEntity = (BarrelBlockEntity) blockEntity;
+            if (!level.isClientSide && player.isCreative() && !barrelBlockEntity.isEmpty()) {
                 ItemStack itemStack = new ItemStack(BlockRegistry.BETTER_BARREL.get());
-                CompoundTag compoundTag = barrelTileEntity.saveToTag(new CompoundTag());
-                if(!compoundTag.isEmpty()) {
-                    itemStack.addTagElement("BlockEntityTag", compoundTag);
-                } if(barrelTileEntity.hasCustomName()) {
-                    itemStack.setHoverName(barrelTileEntity.getCustomName());
+                blockEntity.saveToItem(itemStack);
+                if (barrelBlockEntity.hasCustomName()) {
+                    itemStack.setHoverName(barrelBlockEntity.getCustomName());
                 }
 
-                ItemEntity itemEntity = new ItemEntity(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, itemStack);
+                ItemEntity itemEntity = new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, itemStack);
                 itemEntity.setDefaultPickUpDelay();
-                world.addFreshEntity(itemEntity);
+                level.addFreshEntity(itemEntity);
             } else {
-                barrelTileEntity.unpackLootTable(player);
+                barrelBlockEntity.unpackLootTable(player);
             }
         }
-        super.playerWillDestroy(world, pos, state, player);
+        super.playerWillDestroy(level, pos, state, player);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        BlockEntity tileEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        if(tileEntity instanceof BarrelTileEntity) {
-            BarrelTileEntity barrelTileEntity = (BarrelTileEntity) tileEntity;
+        BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if(blockEntity instanceof BarrelBlockEntity) {
+            BarrelBlockEntity barrelBlockEntity = (BarrelBlockEntity) blockEntity;
             builder = builder.withDynamicDrop(CONTENTS, (lootContext, itemStackConsumer) -> {
-                for(int i = 0; i < barrelTileEntity.getContainerSize(); ++i) {
-                    itemStackConsumer.accept(barrelTileEntity.getItem(i));
+                for(int i = 0; i < barrelBlockEntity.getContainerSize(); ++i) {
+                    itemStackConsumer.accept(barrelBlockEntity.getItem(i));
                 }
             });
         } return super.getDrops(state, builder);
     }
 
     @Override
-    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if(stack.hasCustomHoverName()) {
-            BlockEntity tileEntity = world.getBlockEntity(pos);
-            if(tileEntity instanceof BarrelTileEntity) {
-                ((BarrelTileEntity)tileEntity).setCustomName(stack.getHoverName());
+            BlockEntity tileEntity = level.getBlockEntity(pos);
+            if(tileEntity instanceof BarrelBlockEntity) {
+                ((BarrelBlockEntity)tileEntity).setCustomName(stack.getHoverName());
             }
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public void onRemove(BlockState oldState, Level world, BlockPos pos, BlockState newState, boolean flags) {
+    public void onRemove(BlockState oldState, Level level, BlockPos pos, BlockState newState, boolean flags) {
         if(!oldState.is(newState.getBlock())) {
-            BlockEntity tileEntity = world.getBlockEntity(pos);
-            if(tileEntity instanceof BarrelTileEntity) {
-                world.updateNeighbourForOutputSignal(pos, oldState.getBlock());
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if(blockEntity instanceof BarrelBlockEntity) {
+                level.updateNeighbourForOutputSignal(pos, oldState.getBlock());
             }
-            super.onRemove(oldState, world, pos, newState, flags);
+            super.onRemove(oldState, level, pos, newState, flags);
         }
     }
 
@@ -221,13 +226,11 @@ public class BarrelBlock extends BaseEntityBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter world, BlockPos pos, BlockState state) {
-        ItemStack itemStack = super.getCloneItemStack(world, pos, state);
-        BarrelTileEntity barrelTileEntity = (BarrelTileEntity) world.getBlockEntity(pos);
-        CompoundTag compoundTag = barrelTileEntity.saveToTag(new CompoundTag());
-        if(!compoundTag.isEmpty()) {
-            itemStack.addTagElement("BlockEntityTag", compoundTag);
-        }
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+        ItemStack itemStack = super.getCloneItemStack(state, target, world, pos, player);
+        world.getBlockEntity(pos, BlockEntityType.BARREL).ifPresent((nbt) -> {
+            nbt.saveToItem(itemStack);
+        });
         return itemStack;
     }
 }

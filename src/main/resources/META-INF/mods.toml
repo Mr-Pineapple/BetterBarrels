@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[37,)"
+loaderVersion="[39,)"
 license="All rights reserved"
 issueTrackerURL="https://github.com/Mr-Pineapple/BetterBarrels/issues"
 
 [[mods]]
 modId="pinesbarrels"
-version="1.0.2"
+version="1.0.3"
 displayName="Better Barrels"
 logoFile="icon.png"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/better-barrels"
@@ -17,14 +17,14 @@ description="This is a mod which adds new barrels to the game. the barrels act l
 [[dependencies.pinesbarrels]]
     modId="forge"
     mandatory=true
-    versionRange="[37,)"
+    versionRange="[39,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.pinesbarrels]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.17.1,1.18)"
+    versionRange="[1.18.1,1.19)"
     ordering="NONE"
     side="BOTH"
 
