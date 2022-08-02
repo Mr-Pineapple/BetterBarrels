@@ -10,8 +10,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.ContainerHelper;
@@ -196,7 +194,7 @@ public class BarrelBlock extends BaseEntityBlock {
         CompoundTag compoundTag = stack.getTagElement("BlockEntityTag");
         if(compoundTag != null) {
             if(compoundTag.contains("LootTable", 8)) {
-                tooltip.add(new TextComponent("???????"));
+                tooltip.add(Component.literal("???????"));
             }
             if(compoundTag.contains("Items", 9)) {
                 NonNullList<ItemStack> nonNullList = NonNullList.withSize(27, ItemStack.EMPTY);
@@ -214,7 +212,7 @@ public class BarrelBlock extends BaseEntityBlock {
                     }
                 }
                 if(j - i > 0) {
-                    tooltip.add((new TranslatableComponent("container.shulkerBox.more", j - i)).withStyle(ChatFormatting.ITALIC));
+                    tooltip.add(Component.translatable("container.shulkerBox.more", j - i).withStyle(ChatFormatting.ITALIC));
                 }
             }
         }

@@ -62,7 +62,7 @@ public class BarrelTileEntity extends RandomizableContainerBlockEntity implement
 
     @Override
     protected Component getDefaultName() {
-        return new TranslatableComponent("container.barrel");
+        return Component.translatable("container.barrel");
     }
 
     @Override
