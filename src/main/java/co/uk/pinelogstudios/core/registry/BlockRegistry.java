@@ -3,13 +3,12 @@ package co.uk.pinelogstudios.core.registry;
 import co.uk.pinelogstudios.common.block.BarrelBlock;
 import co.uk.pinelogstudios.common.item.BarrelBlockItem;
 import co.uk.pinelogstudios.core.BetterBarrels;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
