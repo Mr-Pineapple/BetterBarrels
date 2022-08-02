@@ -2,7 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -13,38 +13,40 @@
             },
             {
               "function": "minecraft:copy_nbt",
-              "source": "block_entity",
               "ops": [
                 {
+                  "op": "replace",
                   "source": "Lock",
-                  "target": "BlockEntityTag.Lock",
-                  "op": "replace"
+                  "target": "BlockEntityTag.Lock"
                 },
                 {
+                  "op": "replace",
                   "source": "LootTable",
-                  "target": "BlockEntityTag.LootTable",
-                  "op": "replace"
+                  "target": "BlockEntityTag.LootTable"
                 },
                 {
+                  "op": "replace",
                   "source": "LootTableSeed",
-                  "target": "BlockEntityTag.LootTableSeed",
-                  "op": "replace"
+                  "target": "BlockEntityTag.LootTableSeed"
                 }
-              ]
+              ],
+              "source": "block_entity"
             },
             {
-              "function": "minecraft:set_contents",
+              "type": "pinesbarrels:better_barrel",
               "entries": [
                 {
                   "type": "minecraft:dynamic",
                   "name": "minecraft:contents"
                 }
-              ]
+              ],
+              "function": "minecraft:set_contents"
             }
           ],
           "name": "pinesbarrels:better_barrel"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }
