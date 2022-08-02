@@ -10,7 +10,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'maven-publish'
 
-version = '1.0.2-1.19.1'
+version = '1.0.3-1.19.1'
 group = 'co.uk.pinelogstudios.barrelsplus'
 archivesBaseName = 'pinesbarrels'
 
@@ -71,7 +71,7 @@ jar {
             "Specification-Vendor": "Mr Pineapples",
             "Specification-Version": "1",
             "Implementation-Title": project.name,
-            "Implementation-Version": "1.0.2",
+            "Implementation-Version": "1.0.3",
             "Implementation-Vendor" :"Mr Pineapple",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
