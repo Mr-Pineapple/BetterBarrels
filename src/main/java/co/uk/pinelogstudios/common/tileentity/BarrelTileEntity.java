@@ -1,21 +1,17 @@
 package co.uk.pinelogstudios.common.tileentity;
 
 import co.uk.pinelogstudios.client.screens.containers.BarrelContainer;
-import co.uk.pinelogstudios.core.registry.TagRegistry;
 import co.uk.pinelogstudios.core.registry.TileEntityRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -80,11 +76,19 @@ public class BarrelTileEntity extends RandomizableContainerBlockEntity implement
         super.load(compoundTag);
         this.loadFromTag(compoundTag);
     }
+//
+//    @Override
+//    public CompoundTag save(CompoundTag compoundTag) {
+//        super.save(compoundTag);
+//        return this.saveToTag(compoundTag);
+//    }
 
-    @Override
-    public CompoundTag save(CompoundTag compoundTag) {
-        super.save(compoundTag);
-        return this.saveToTag(compoundTag);
+    protected void saveAdditional(CompoundTag compoundTag) {
+        super.saveAdditional(compoundTag);
+        if (!this.trySaveLootTable(compoundTag)) {
+            ContainerHelper.saveAllItems(compoundTag, this.itemStacks, false);
+        }
+
     }
 
     public void loadFromTag(CompoundTag compoundTag) {
