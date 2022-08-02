@@ -7,16 +7,16 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 /**
  * Author: Mr. Pineapple
  */
 public class TileEntityRegistry {
-    public static final DeferredRegister<BlockEntityType<?>> REGISTER_TILE_ENTITY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, BetterBarrels.MOD_ID);
-    public static final DeferredRegister<MenuType<?>> REGISTER_CONTAINER = DeferredRegister.create(ForgeRegistries.CONTAINERS, BetterBarrels.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> REGISTER_TILE_ENTITY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, BetterBarrels.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> REGISTER_CONTAINER = DeferredRegister.create(ForgeRegistries.MENU_TYPES, BetterBarrels.MOD_ID);
 
     public static final RegistryObject<BlockEntityType<BarrelTileEntity>> BARREL = REGISTER_TILE_ENTITY.register("better_barrel", () -> BlockEntityType.Builder.of(BarrelTileEntity::new, new Block[]{BlockRegistry.BETTER_BARREL.get()}).build(null));
     public static final RegistryObject<MenuType<BarrelContainer>> BARREL_CONTAINER = register("better_barrel", BarrelContainer::new);
