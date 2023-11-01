@@ -1,9 +1,7 @@
 package co.uk.pinelogstudios.client.screens.slots;
 
-import co.uk.pinelogstudios.core.registry.TagRegistry;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 /**

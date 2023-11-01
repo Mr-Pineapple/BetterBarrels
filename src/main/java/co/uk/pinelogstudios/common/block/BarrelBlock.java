@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
@@ -30,12 +31,12 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -48,7 +49,7 @@ public class BarrelBlock extends BaseEntityBlock {
     public static final ResourceLocation CONTENTS = new ResourceLocation("contents");
 
     public BarrelBlock() {
-        super(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+        super(BlockBehaviour.Properties.of().strength(2.0F, 3.0F).sound(SoundType.WOOD));
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
 
@@ -57,21 +58,28 @@ public class BarrelBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if(world.isClientSide) {
-            return InteractionResult.SUCCESS;
-        } else if(player.isSpectator()) {
-            return InteractionResult.CONSUME;
-        } else {
-            BlockEntity tileEntity = world.getBlockEntity(pos);
-            if(tileEntity instanceof BarrelTileEntity) {
-                BarrelTileEntity barrelTileEntity = (BarrelTileEntity) tileEntity;
-                player.openMenu(barrelTileEntity);
-                player.awardStat(Stats.OPEN_BARREL);
-                return InteractionResult.CONSUME;
-            } else {
-                return InteractionResult.PASS;
+//        if(world.isClientSide) {
+//            return InteractionResult.SUCCESS;
+//        } else if(player.isSpectator()) {
+//            return InteractionResult.CONSUME;
+//        } else {
+//            BlockEntity tileEntity = world.getBlockEntity(pos);
+//            if(tileEntity instanceof BarrelTileEntity) {
+//                BarrelTileEntity barrelTileEntity = (BarrelTileEntity) tileEntity;
+//                player.openMenu(barrelTileEntity);
+//                player.awardStat(Stats.OPEN_BARREL);
+//                return InteractionResult.CONSUME;
+//            } else {
+//                return InteractionResult.PASS;
+//            }
+//        }
+
+        if(!world.isClientSide()) {
+            if(world.getBlockEntity(pos) instanceof BarrelTileEntity tileEntity) {
+                NetworkHooks.openScreen((ServerPlayer) player, tileEntity, pos);
             }
         }
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -158,11 +166,11 @@ public class BarrelBlock extends BaseEntityBlock {
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         BlockEntity tileEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         if(tileEntity instanceof BarrelTileEntity) {
             BarrelTileEntity barrelTileEntity = (BarrelTileEntity) tileEntity;
-            builder = builder.withDynamicDrop(CONTENTS, (lootContext, itemStackConsumer) -> {
+            builder = builder.withDynamicDrop(CONTENTS, (itemStackConsumer) -> {
                 for(int i = 0; i < barrelTileEntity.getContainerSize(); ++i) {
                     itemStackConsumer.accept(barrelTileEntity.getItem(i));
                 }

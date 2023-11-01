@@ -3,10 +3,12 @@ package co.uk.pinelogstudios.core.registry;
 import co.uk.pinelogstudios.client.screens.containers.BarrelContainer;
 import co.uk.pinelogstudios.common.tileentity.BarrelTileEntity;
 import co.uk.pinelogstudios.core.BetterBarrels;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -19,9 +21,14 @@ public class TileEntityRegistry {
     public static final DeferredRegister<MenuType<?>> REGISTER_CONTAINER = DeferredRegister.create(ForgeRegistries.MENU_TYPES, BetterBarrels.MOD_ID);
 
     public static final RegistryObject<BlockEntityType<BarrelTileEntity>> BARREL = REGISTER_TILE_ENTITY.register("better_barrel", () -> BlockEntityType.Builder.of(BarrelTileEntity::new, new Block[]{BlockRegistry.BETTER_BARREL.get()}).build(null));
-    public static final RegistryObject<MenuType<BarrelContainer>> BARREL_CONTAINER = register("better_barrel", BarrelContainer::new);
+    public static final RegistryObject<MenuType<BarrelContainer>> BARREL_CONTAINER = register("better_barrel", (IContainerFactory<BarrelContainer>) (windowId, playerInventory, data) -> {
+        BarrelTileEntity barrelTileEntity = (BarrelTileEntity) playerInventory.player.level().getBlockEntity(data.readBlockPos());
+        return new BarrelContainer(windowId, playerInventory, barrelTileEntity);
+    });
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> register(String id, MenuType.MenuSupplier<T> factory) {
-        return REGISTER_CONTAINER.register(id, () -> new MenuType<>(factory));
+        return REGISTER_CONTAINER.register(id, () -> new MenuType<>(factory, FeatureFlags.DEFAULT_FLAGS));
     }
+
+
 }

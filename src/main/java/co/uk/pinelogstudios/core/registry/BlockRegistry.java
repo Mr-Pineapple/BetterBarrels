@@ -20,11 +20,11 @@ public class BlockRegistry {
     public static final DeferredRegister<Block> REGISTER = DeferredRegister.create(ForgeRegistries.BLOCKS, BetterBarrels.MOD_ID);
     public static final DeferredRegister<Item> REGISTER_ITEM = DeferredRegister.create(ForgeRegistries.ITEMS, BetterBarrels.MOD_ID);
 
-    public static final RegistryObject<Block> BETTER_BARREL = register("better_barrel", BarrelBlock::new, CreativeModeTab.TAB_MISC);
+    public static final RegistryObject<Block> BETTER_BARREL = register("better_barrel", BarrelBlock::new);
 
-    public static <B extends Block> RegistryObject<B> register(String name, Supplier<? extends B> supplier, @Nullable CreativeModeTab group) {
+    public static <B extends Block> RegistryObject<B> register(String name, Supplier<? extends B> supplier) {
         RegistryObject<B> block = REGISTER.register(name, supplier);
-        REGISTER_ITEM.register(name, () -> new BarrelBlockItem(block.get(), new Item.Properties().tab(group).stacksTo(1)));
+        REGISTER_ITEM.register(name, () -> new BarrelBlockItem(block.get(), new Item.Properties().stacksTo(1)));
         return block;
     }
 }
