@@ -55,24 +55,9 @@ public class BarrelBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-//        if(world.isClientSide) {
-//            return InteractionResult.SUCCESS;
-//        } else if(player.isSpectator()) {
-//            return InteractionResult.CONSUME;
-//        } else {
-//            BlockEntity tileEntity = world.getBlockEntity(pos);
-//            if(tileEntity instanceof BarrelTileEntity) {
-//                BarrelTileEntity barrelTileEntity = (BarrelTileEntity) tileEntity;
-//                player.openMenu(barrelTileEntity);
-//                player.awardStat(Stats.OPEN_BARREL);
-//                return InteractionResult.CONSUME;
-//            } else {
-//                return InteractionResult.PASS;
-//            }
-//        }
-
         if(!world.isClientSide()) {
             if(world.getBlockEntity(pos) instanceof BarrelTileEntity tileEntity) {
+                player.awardStat(Stats.OPEN_BARREL);
                 NetworkHooks.openScreen((ServerPlayer) player, tileEntity, pos);
             }
         }
