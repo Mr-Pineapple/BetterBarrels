@@ -85,10 +85,6 @@ public class BarrelBlock extends BaseEntityBlock {
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         switch(state.getValue(FACING)) {
-            case UP:
-                return VoxelShapeUtil.BARREL_UP;
-            case DOWN:
-                return VoxelShapeUtil.BARREL_DOWN;
             case NORTH:
                 return VoxelShapeUtil.BARREL_NORTH;
             case EAST:
