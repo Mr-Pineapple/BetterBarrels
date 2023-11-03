@@ -8,7 +8,8 @@
     },
     
     "facing=east": {
-      "model": "pinesbarrels:block/better_barrel_east"
+      "y": 90,
+      "model": "pinesbarrels:block/better_barrel_north"
     },
     
     "facing=north": {
@@ -16,7 +17,8 @@
     },
     
     "facing=south": {
-      "model": "pinesbarrels:block/better_barrel_south"
+      "y": 180,
+      "model": "pinesbarrels:block/better_barrel_north"
     },
     
     "facing=up": {
@@ -24,7 +26,8 @@
     },
     
     "facing=west": {
-      "model": "pinesbarrels:block/better_barrel_west"
+      "y": -90,
+      "model": "pinesbarrels:block/better_barrel_north"
     }
     
   }
